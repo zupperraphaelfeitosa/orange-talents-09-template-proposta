@@ -1,6 +1,7 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
 import br.com.zup.raphaelfeitosa.proposta.validations.anotations.CPForCNPJ;
+import br.com.zup.raphaelfeitosa.proposta.validations.anotations.ExistDocument;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ public class PropostaRequest {
 
     @NotBlank
     @CPForCNPJ
+    @ExistDocument
     private String document;
 
     @NotNull

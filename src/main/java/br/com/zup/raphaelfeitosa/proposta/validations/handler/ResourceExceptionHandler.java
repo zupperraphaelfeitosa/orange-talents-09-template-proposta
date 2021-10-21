@@ -1,5 +1,6 @@
 package br.com.zup.raphaelfeitosa.proposta.validations.handler;
 
+import br.com.zup.raphaelfeitosa.proposta.validations.exceptions.ApiResponseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -23,7 +24,7 @@ public class ResourceExceptionHandler {
     public ResponseEntity<ValidationError> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         Integer code = status.value();
-        ValidationError err = new ValidationError(Instant.now(), code, status, "Error validation", request.getRequestURI());
+        ValidationError err = new ValidationError(Instant.now(), code, status, request.getRequestURI());
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
             String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
             err.addError(fieldError.getField(), message);
@@ -31,4 +32,12 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(ApiResponseException.class)
+    public ResponseEntity<ValidationError> apiExceptionHandler(ApiResponseException e, HttpServletRequest request) {
+        HttpStatus status = e.getHttpStatus();
+        Integer code = status.value();
+        ValidationError err = new ValidationError(Instant.now(), code, status, request.getRequestURI());
+        err.addError(e.getFieldName(), e.getMessage());
+        return ResponseEntity.status(status).body(err);
+    }
 }

@@ -37,7 +37,7 @@ public class CriaNovaPropostaController {
         return ResponseEntity.created(uri).build();
     }
 
-    public void propostaCriada(Proposta proposta) {
+    private void propostaCriada(Proposta proposta) {
         logger.info("Proposta documento={}, salário={} criada com sucesso!", proposta.getDocument(), proposta.getSalary());
     }
 }

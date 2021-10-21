@@ -8,12 +8,10 @@ import java.util.List;
 
 public class ValidationError extends StandardError {
 
-    private static final long serialVersionUID = 1L;
-
     private List<FieldMessage> errors = new ArrayList<>();
 
-    public ValidationError(Instant timestamp, Integer code, HttpStatus status, String message, String path) {
-        super(timestamp, code, status, message, path);
+    public ValidationError(Instant timestamp, Integer code, HttpStatus status, String path) {
+        super(timestamp, code, status, path);
     }
 
     public List<FieldMessage> getErrors() {

@@ -147,4 +147,26 @@ public class CriaNovaPropostaControllerTest {
                         .isBadRequest());
         assertTrue(propostaRepository.findByEmail("johndoe@gmail.com").isEmpty());
     }
+    @Test
+    @Order(7)
+    void naoDeveriaCadastrarNovaPropostaComPropostaExistenteVinculadaAoDocumentoComRetorno422() throws Exception {
+
+        PropostaRequest novaProposta = new PropostaRequest(
+                "John Doe", "johndoe@gmail.com", "761.159.900-33", BigDecimal.valueOf(1000), "Rua treze de maio");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(novaProposta)));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post(uri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(novaProposta)))
+                .andExpect(MockMvcResultMatchers
+                        .status()
+                        .isUnprocessableEntity());
+
+        assertTrue(propostaRepository.findByDocument("761.159.900-33").isPresent());
+    }
 }
