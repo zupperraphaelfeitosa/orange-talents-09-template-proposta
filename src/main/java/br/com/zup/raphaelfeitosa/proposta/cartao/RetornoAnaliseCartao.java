@@ -31,14 +31,5 @@ public class RetornoAnaliseCartao {
         return idProposta;
     }
 
-    @Override
-    public String toString() {
-        return "RetornoAnaliseCartao{" +
-                "documento='" + documento + '\'' +
-                ", nome='" + nome + '\'' +
-                ", resultadoSolicitacao=" + resultadoSolicitacao +
-                ", idProposta='" + idProposta + '\'' +
-                '}';
-    }
 }
 

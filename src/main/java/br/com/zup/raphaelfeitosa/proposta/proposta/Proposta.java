@@ -69,6 +69,10 @@ public class Proposta {
         return address;
     }
 
+    public StatusProposta getStatus() {
+        return status;
+    }
+
     public SolicitaAnaliseCartao toSolicitaAnaliseCartao() {
         return new SolicitaAnaliseCartao(document, name, id.toString());
     }

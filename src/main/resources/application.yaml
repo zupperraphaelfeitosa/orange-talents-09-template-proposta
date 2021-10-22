@@ -14,3 +14,17 @@ spring:
     url: jdbc:mysql://localhost:3306/proposta_api_db?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&sslMode=DISABLED
     username: root
     password: password
+
+servico:
+  analise:
+    dados:
+      solicitante: localhost:9999/api/solicitacao
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+        exclude: env,beans
+  endpoint:
+    show-details: always
