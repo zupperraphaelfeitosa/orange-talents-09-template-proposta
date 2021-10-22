@@ -1,5 +1,9 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
+import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartao;
+import br.com.zup.raphaelfeitosa.proposta.cartao.SolicitaAnaliseCartao;
+import br.com.zup.raphaelfeitosa.proposta.cartao.StatusAnaliseCartao;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -26,8 +30,12 @@ public class Proposta {
     @Column(nullable = false)
     private String address;
 
+    @Enumerated(EnumType.STRING)
+    private StatusProposta status;
+
     @Deprecated
-    public Proposta(){}
+    public Proposta() {
+    }
 
     public Proposta(String name, String email, String document, BigDecimal salary, String address) {
         this.name = name;
@@ -59,5 +67,19 @@ public class Proposta {
 
     public String getAddress() {
         return address;
+    }
+
+    public SolicitaAnaliseCartao toSolicitaAnaliseCartao() {
+        return new SolicitaAnaliseCartao(document, name, id.toString());
+    }
+
+    public void adicionaRestricao(StatusProposta status) {
+        this.status = status;
+    }
+
+    public void verificaRetornoAnalise(RetornoAnaliseCartao retornoAnaliseCartao) {
+        if (retornoAnaliseCartao != null && retornoAnaliseCartao.getResultadoSolicitacao().equals(StatusAnaliseCartao.SEM_RESTRICAO)) {
+            adicionaRestricao(StatusProposta.ELEGIVEL);
+        }
     }
 }
