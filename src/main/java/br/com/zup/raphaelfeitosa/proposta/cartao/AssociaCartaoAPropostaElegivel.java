@@ -28,7 +28,7 @@ public class AssociaCartaoAPropostaElegivel {
     @Scheduled(fixedDelayString = "${scheduled.periodicidade.executa-operacao}")
     @Transactional
     public void associaCartaoAPropostaElegivel() {
-        Collection<Proposta> propostasElegiveisSemCartao = propostaRepository.findByStatusAndCartao(StatusProposta.ELEGIVEL, null);
+        Collection<Proposta> propostasElegiveisSemCartao = propostaRepository.findFirst10ByStatusAndCartao(StatusProposta.ELEGIVEL, null);
         propostasElegiveisSemCartao.forEach(proposta -> {
             try {
                 RetornoCartaoResponse numeroCartao = servicoCartaoApi.solicitaCartao(proposta.toSolicitaAnaliseCartao());

@@ -46,4 +46,8 @@ public class Cartao {
     public Integer getLimite() {
         return limite;
     }
+
+    public Long getId() {
+        return id;
+    }
 }

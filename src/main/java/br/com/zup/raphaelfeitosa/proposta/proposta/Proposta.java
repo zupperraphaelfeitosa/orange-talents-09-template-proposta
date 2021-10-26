@@ -34,7 +34,7 @@ public class Proposta {
     @Enumerated(EnumType.STRING)
     private StatusProposta status;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private Cartao cartao;
 
@@ -76,6 +76,10 @@ public class Proposta {
 
     public StatusProposta getStatus() {
         return status;
+    }
+
+    public Cartao getCartao() {
+        return cartao;
     }
 
     public SolicitaAnaliseCartao toSolicitaAnaliseCartao() {
