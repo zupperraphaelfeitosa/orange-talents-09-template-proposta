@@ -1,7 +1,7 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartao;
-import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ConsultaDadosFinanceiroSolicitante;
+import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ServicoAnaliseApi;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,48 +19,46 @@ import java.net.URI;
 public class CriaNovaPropostaController {
 
     private final Logger logger = LoggerFactory.getLogger(Proposta.class);
+    private final PropostaRepository propostaRepository;
+    private final ServicoAnaliseApi servicoAnaliseApi;
 
-    private PropostaRepository propostaRepository;
-
-    private ConsultaDadosFinanceiroSolicitante consultaDadosFinanceiroSolicitante;
-
-    public CriaNovaPropostaController(PropostaRepository propostaRepository, ConsultaDadosFinanceiroSolicitante consultaDadosFinanceiroSolicitante) {
+    public CriaNovaPropostaController(PropostaRepository propostaRepository, ServicoAnaliseApi servicoAnaliseApi) {
         this.propostaRepository = propostaRepository;
-        this.consultaDadosFinanceiroSolicitante = consultaDadosFinanceiroSolicitante;
+        this.servicoAnaliseApi = servicoAnaliseApi;
     }
 
     @PostMapping("/api/v1/propostas")
     @Transactional
     public ResponseEntity<Void> criarNovaProposta(@RequestBody @Valid PropostaRequest request,
-                                               UriComponentsBuilder uriBuilder) {
-
+                                                  UriComponentsBuilder uriBuilder) {
         Proposta novaProposta = request.toProposta();
-
         propostaRepository.save(novaProposta);
-
         verificaSolicitacaoDeAnalise(novaProposta);
 
-        propostaCriada(novaProposta);
-
         URI uri = uriBuilder.path("/api/v1/propostas/{id}").buildAndExpand(novaProposta.getId()).toUri();
-
+        logger.info("Proposta documento={} criada com sucesso!", novaProposta.getDocument());
         return ResponseEntity.created(uri).build();
     }
 
     private void verificaSolicitacaoDeAnalise(Proposta novaProposta) {
         try {
-            RetornoAnaliseCartao retornoAnaliseCartao = consultaDadosFinanceiroSolicitante
+            RetornoAnaliseCartao retornoAnaliseCartao = servicoAnaliseApi
                     .solicitaVerificacao(novaProposta.toSolicitaAnaliseCartao());
             novaProposta.verificaRetornoAnalise(retornoAnaliseCartao);
             propostaRepository.save(novaProposta);
+            logger.info("Proposta documento={} atualizada para status={} ",
+                    novaProposta.getDocument(), novaProposta.getStatus());
 
         } catch (FeignException.UnprocessableEntity exception) {
             novaProposta.adicionaRestricao(StatusProposta.NAO_ELEGIVEL);
             propostaRepository.save(novaProposta);
+            logger.info("Proposta documento={} atualizada para status={} ",
+                    novaProposta.getDocument(), novaProposta.getStatus());
+
+        } catch (FeignException.InternalServerError exception) {
+            logger.error("Proposta  documento={}, não foi possível acessar o serviço de analise financeira. Erro: {}",
+                    novaProposta.getDocument(), exception.getLocalizedMessage());
         }
     }
 
-    private void propostaCriada(Proposta proposta) {
-        logger.info("Proposta documento={}, salário={} criada com sucesso!", proposta.getDocument(), proposta.getSalary());
-    }
 }

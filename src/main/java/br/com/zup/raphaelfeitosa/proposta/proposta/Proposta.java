@@ -1,5 +1,6 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
+import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.SolicitaAnaliseCartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.StatusAnaliseCartao;
@@ -32,6 +33,10 @@ public class Proposta {
 
     @Enumerated(EnumType.STRING)
     private StatusProposta status;
+
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(unique = true)
+    private Cartao cartao;
 
     @Deprecated
     public Proposta() {
@@ -79,6 +84,10 @@ public class Proposta {
 
     public void adicionaRestricao(StatusProposta status) {
         this.status = status;
+    }
+
+    public void associaCartao(Cartao cartao) {
+        this.cartao = cartao;
     }
 
     public void verificaRetornoAnalise(RetornoAnaliseCartao retornoAnaliseCartao) {

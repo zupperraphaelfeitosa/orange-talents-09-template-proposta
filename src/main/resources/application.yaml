@@ -3,6 +3,7 @@ server:
 spring:
   application:
     name: proposta_api
+# JPA
   jpa:
     show-sql: true
     hibernate:
@@ -10,21 +11,42 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+# Datasource - MySQL
   datasource:
     url: jdbc:mysql://localhost:3306/proposta_api_db?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&sslMode=DISABLED
     username: root
     password: password
 
-servico:
-  analise:
-    dados:
-      solicitante: localhost:9999/api/solicitacao
+# Feign clients URL
+feign:
+  client:
+    config:
+      default:
+        connection-timeout: 400
+        read-timeout: 400
+  servico:
+    analise:
+      api-solicitacao: http://localhost:9999/api/solicitacao
+    cartao:
+      api-solicitacao: http://localhost:8888/api/cartoes
 
+# Scheduled
+scheduled:
+  periodicidade:
+    executa-operacao: 10000
+
+# Actuator
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,prometheus
         exclude: env,beans
+    prometheus:
+      enable: true
+  metrics:
+    tags:
+      aplicacao: serviço de proposta
+      ambiente: desenvolvimento
   endpoint:
     show-details: always
