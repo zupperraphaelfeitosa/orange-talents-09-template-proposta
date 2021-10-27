@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   application:
     name: proposta_api
@@ -13,7 +13,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
 # Datasource - MySQL
   datasource:
-    url: jdbc:mysql://localhost:3306/proposta_api_db?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&sslMode=DISABLED
+    url: jdbc:mysql://proposta_api_db:3306/proposta_api_db
     username: root
     password: password
 
@@ -26,9 +26,9 @@ feign:
         read-timeout: 400
   servico:
     analise:
-      api-solicitacao: http://localhost:9999/api/solicitacao
+      api-solicitacao: http://analise:9999/api/solicitacao
     cartao:
-      api-solicitacao: http://localhost:8888/api/cartoes
+      api-solicitacao: http://contas:8888/api/cartoes
 
 # Scheduled
 scheduled:
