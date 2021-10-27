@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class AssociaCartaoAPropostaElegivelTest {
+public class AssociaCartaoAPropostaElegivelSchedulerTest {
 
     @Autowired
     private PropostaRepository propostaRepository;
@@ -28,7 +28,7 @@ public class AssociaCartaoAPropostaElegivelTest {
     private CartaoRepository cartaoRepository;
 
     @Autowired
-    private AssociaCartaoAPropostaElegivel associaCartaoAPropostaElegivel;
+    private AssociaCartaoAPropostaElegivelScheduler associaCartaoAPropostaElegivelScheduler;
 
     @MockBean
     private ServicoCartaoApi servicoCartaoApi;
@@ -65,7 +65,7 @@ public class AssociaCartaoAPropostaElegivelTest {
 
         Mockito.when(servicoCartaoApi.solicitaCartao(Mockito.any())).thenReturn(retornoCartaoResponse);
 
-        associaCartaoAPropostaElegivel.associaCartaoAPropostaElegivel();
+        associaCartaoAPropostaElegivelScheduler.associaCartaoAPropostaElegivel();
 
         assertTrue(propostaRepository.findFirst10ByStatusAndCartao(StatusProposta.ELEGIVEL, null).isEmpty());
         assertTrue(cartaoRepository.findByNumero("5812-4804-7265-6806").isPresent());

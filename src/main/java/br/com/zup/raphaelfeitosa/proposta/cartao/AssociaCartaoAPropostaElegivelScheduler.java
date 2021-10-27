@@ -14,13 +14,13 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 
 @Component
-public class AssociaCartaoAPropostaElegivel {
+public class AssociaCartaoAPropostaElegivelScheduler {
 
-    private final Logger logger = LoggerFactory.getLogger(AssociaCartaoAPropostaElegivel.class);
+    private final Logger logger = LoggerFactory.getLogger(AssociaCartaoAPropostaElegivelScheduler.class);
     private final PropostaRepository propostaRepository;
     private final ServicoCartaoApi servicoCartaoApi;
 
-    public AssociaCartaoAPropostaElegivel(PropostaRepository propostaRepository, ServicoCartaoApi servicoCartaoApi) {
+    public AssociaCartaoAPropostaElegivelScheduler(PropostaRepository propostaRepository, ServicoCartaoApi servicoCartaoApi) {
         this.propostaRepository = propostaRepository;
         this.servicoCartaoApi = servicoCartaoApi;
     }
@@ -31,7 +31,7 @@ public class AssociaCartaoAPropostaElegivel {
         Collection<Proposta> propostasElegiveisSemCartao = propostaRepository.findFirst10ByStatusAndCartao(StatusProposta.ELEGIVEL, null);
         propostasElegiveisSemCartao.forEach(proposta -> {
             try {
-                RetornoCartaoResponse numeroCartao = servicoCartaoApi.solicitaCartao(proposta.toSolicitaAnaliseCartao());
+                RetornoCartaoResponse numeroCartao = servicoCartaoApi.solicitaCartao(proposta.getId());
                 Cartao cartao = numeroCartao.toCartao(proposta);
                 proposta.associaCartao(cartao);
                 propostaRepository.save(proposta);
