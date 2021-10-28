@@ -17,6 +17,14 @@ spring:
     username: root
     password: password
 
+# Key Cloack
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:18080/auth/realms/proposta
+          jwk-set-uri: http://localhost:18080/auth/realms/proposta/protocol/openid-connect/certs
+
 # Feign clients URL
 feign:
   client:

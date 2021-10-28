@@ -4,6 +4,7 @@ import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ServicoCartaoApi;
 import br.com.zup.raphaelfeitosa.proposta.proposta.Proposta;
 import br.com.zup.raphaelfeitosa.proposta.proposta.PropostaRepository;
 import br.com.zup.raphaelfeitosa.proposta.proposta.StatusProposta;
+import br.com.zup.raphaelfeitosa.proposta.util.OfuscaDadoSensivel;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 
 @Component
-public class AssociaCartaoAPropostaElegivelScheduler {
+public class AssociaCartaoAPropostaElegivelScheduler implements OfuscaDadoSensivel {
 
     private final Logger logger = LoggerFactory.getLogger(AssociaCartaoAPropostaElegivelScheduler.class);
     private final PropostaRepository propostaRepository;
@@ -35,7 +36,8 @@ public class AssociaCartaoAPropostaElegivelScheduler {
                 Cartao cartao = numeroCartao.toCartao(proposta);
                 proposta.associaCartao(cartao);
                 propostaRepository.save(proposta);
-                logger.info("Proposta documento={} associada ao cartao cartao={} ", proposta.getDocument(), cartao.getNumero());
+                logger.info("Proposta documento={} associada ao cartao cartao={} ",
+                        ofuscaDocumento(proposta.getDocument()), ofuscaCartao(cartao.getNumero()));
 
             } catch (FeignException exception) {
                 logger.error("Erro inesperado: {}", exception.getLocalizedMessage());
