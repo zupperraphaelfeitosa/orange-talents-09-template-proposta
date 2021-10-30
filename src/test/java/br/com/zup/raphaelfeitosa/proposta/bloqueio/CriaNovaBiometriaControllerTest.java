@@ -1,4 +1,4 @@
-package br.com.zup.raphaelfeitosa.proposta.biometria;
+package br.com.zup.raphaelfeitosa.proposta.bloqueio;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.CartaoRepository;
@@ -7,9 +7,6 @@ import br.com.zup.raphaelfeitosa.proposta.proposta.PropostaRepository;
 import br.com.zup.raphaelfeitosa.proposta.proposta.StatusProposta;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Transactional
 public class CriaNovaBiometriaControllerTest {
 
-    private final String uri = "/api/v1/biometrias/";
+    private final String uri = "/api/v1/bloqueios/";
     private Proposta proposta;
     private Cartao cartao;
 
@@ -43,7 +40,7 @@ public class CriaNovaBiometriaControllerTest {
     private Gson gson;
 
     @Autowired
-    private BiometriaRepository biometriaRepository;
+    private BloqueioRepository bloqueioRepository;
 
     @Autowired
     private CartaoRepository cartaoRepository;
@@ -72,51 +69,45 @@ public class CriaNovaBiometriaControllerTest {
 
     @Test
     @Order(1)
-    void deveriaCadastrarUmaFingerPrintComRetorno201() throws Exception {
-
-        BiometriaRequest novaBiometria = new BiometriaRequest("YmlvbWV0cmlh");
+    void deveriaCadastrarBloqueioDeCartaoComRetorno200() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(uri + cartao.getId())
-                        .content(gson.toJson(novaBiometria))
+                        .header("User-Agent", "PostmanRuntime/7.28.4")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers
                         .status()
-                        .isCreated())
-                .andExpect(MockMvcResultMatchers
-                        .redirectedUrlPattern("http://**/api/v1/biometrias/{spring:[0-9]+}"));
+                        .isOk());
 
         assertTrue(propostaRepository.findByDocument("99985090098").isPresent());
         assertTrue(cartaoRepository.findByNumero("5812-4804-7265-6806").isPresent());
-        assertTrue(biometriaRepository.findById(1L).isPresent());
+        assertTrue(bloqueioRepository.findByNumero("5812-4804-7265-6806").isPresent());
     }
 
+    @Test
     @Order(2)
-    @ParameterizedTest
-    @ValueSource(strings = {"InvalidBase64"})
-    @NullAndEmptySource
-    void naoDeveriaCadastrarUmaFingerPrintComCampoNuloOuVazioOuBase64InvalidaComRetorno400(String fingerPrint) throws Exception {
-
-        BiometriaRequest novaBiometria = new BiometriaRequest(fingerPrint);
+    void naoDeveriaCadastrarUmBloqueioDeCartaoJaBloqueadoComRetorno422() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .post(uri + cartao.getId())
+                .header("User-Agent", "PostmanRuntime/7.28.4")
+                .contentType(MediaType.APPLICATION_JSON));
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(uri + cartao.getId())
-                        .content(gson.toJson(novaBiometria))
+                        .header("User-Agent", "PostmanRuntime/7.28.4")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers
                         .status()
-                        .isBadRequest());
+                        .isUnprocessableEntity());
     }
 
     @Test
     @Order(3)
-    void naoDeveriaCadastrarUmaFingerPrintComIdDoCartaoInvalidoComRetorno404() throws Exception {
-
-        BiometriaRequest novaBiometria = new BiometriaRequest("YmlvbWV0cmlh");
+    void naoDeveriaCadastrarUmBloqueiDeCartaoComIdInvalidoComRetorno402() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(uri + 50L)
-                        .content(gson.toJson(novaBiometria))
+                        .header("User-Agent", "PostmanRuntime/7.28.4")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers
                         .status()

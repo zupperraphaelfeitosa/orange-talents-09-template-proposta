@@ -35,7 +35,7 @@ public class Proposta {
     private StatusProposta status;
 
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(unique = true)
+    @JoinColumn(name = "id_cartao", unique = true)
     private Cartao cartao;
 
     @Deprecated

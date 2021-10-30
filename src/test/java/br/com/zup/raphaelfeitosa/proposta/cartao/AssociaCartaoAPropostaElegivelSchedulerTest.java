@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 public class AssociaCartaoAPropostaElegivelSchedulerTest {
 
     @Autowired
@@ -35,10 +37,6 @@ public class AssociaCartaoAPropostaElegivelSchedulerTest {
 
     @Test
     void deveriaAssociarCartaoAPropostaElegivel() {
-
-        propostaRepository.deleteAll();
-        cartaoRepository.deleteAll();
-
         Proposta propostaElegivelSemCartao = new Proposta(
                 "John Doe",
                 "johndoe@gmail.com",

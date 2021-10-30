@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Base64;
@@ -32,6 +33,7 @@ public class CriaNovaBiometriaController implements OfuscaDadoSensivel {
     }
 
     @PostMapping("/api/v1/biometrias/{id}")
+    @Transactional
     public ResponseEntity<Void> cadastrarNovaBiometrica(@PathVariable(name = "id") Long id,
                                                         @RequestBody @Valid BiometriaRequest request,
                                                         UriComponentsBuilder uriBuilder) {
