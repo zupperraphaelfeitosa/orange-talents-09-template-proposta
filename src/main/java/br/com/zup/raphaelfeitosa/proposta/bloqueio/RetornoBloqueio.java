@@ -4,9 +4,6 @@ public class RetornoBloqueio {
 
     private StatusBloqueio resultado;
 
-    public RetornoBloqueio(StatusBloqueio resultado) {
-    }
-
     public StatusBloqueio getResultado() {
         return resultado;
     }

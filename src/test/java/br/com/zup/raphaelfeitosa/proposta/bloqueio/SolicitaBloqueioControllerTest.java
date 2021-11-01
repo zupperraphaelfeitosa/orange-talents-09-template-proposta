@@ -78,7 +78,9 @@ public class SolicitaBloqueioControllerTest {
     @Test
     @Order(1)
     void deveriaCadastrarBloqueioDeCartaoComRetorno200() throws Exception {
-        Mockito.when(servicoCartaoApi.notificacaoBloqueio(Mockito.any(), Mockito.any())).thenReturn(new RetornoBloqueio(StatusBloqueio.BLOQUEADO));
+        RetornoBloqueio retornoBloqueio = Mockito.mock(RetornoBloqueio.class);
+        Mockito.when(retornoBloqueio.getResultado()).thenReturn(StatusBloqueio.BLOQUEADO);
+        Mockito.when(servicoCartaoApi.notificacaoBloqueio(Mockito.any(), Mockito.any())).thenReturn(retornoBloqueio);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(URI + cartao.getId() + "/bloqueios")
