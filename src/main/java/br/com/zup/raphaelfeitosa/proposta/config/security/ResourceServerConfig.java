@@ -21,7 +21,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests(
                         authorizerequests -> authorizerequests
                                 .antMatchers(GET, "/actuator/**")
-                                .permitAll()
+                                .hasAuthority(SCOPE)
 
                                 .antMatchers(GET, "/api/v1/propostas/**")
                                 .hasAuthority(SCOPE)
