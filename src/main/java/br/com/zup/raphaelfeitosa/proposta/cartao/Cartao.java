@@ -2,6 +2,9 @@ package br.com.zup.raphaelfeitosa.proposta.cartao;
 
 import br.com.zup.raphaelfeitosa.proposta.biometria.Biometria;
 import br.com.zup.raphaelfeitosa.proposta.bloqueio.Bloqueio;
+import br.com.zup.raphaelfeitosa.proposta.bloqueio.RetornoBloqueio;
+import br.com.zup.raphaelfeitosa.proposta.bloqueio.SolicitaBloqueio;
+import br.com.zup.raphaelfeitosa.proposta.bloqueio.StatusBloqueio;
 import br.com.zup.raphaelfeitosa.proposta.proposta.Proposta;
 
 import javax.persistence.*;
@@ -72,4 +75,9 @@ public class Cartao {
     public void bloquear() {
         this.status = StatusCartao.BLOQUEADO;
     }
+
+    public SolicitaBloqueio toNotificacaoBloqueio() {
+        return new SolicitaBloqueio("proposta-api");
+    }
+
 }

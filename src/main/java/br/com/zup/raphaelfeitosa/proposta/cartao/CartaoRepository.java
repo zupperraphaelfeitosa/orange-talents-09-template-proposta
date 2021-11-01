@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface CartaoRepository extends JpaRepository<Cartao, Long> {
 
     Optional<Cartao> findByNumero(String numero);
+
+    Optional<Cartao> findByStatus(StatusCartao bloqueado);
 }

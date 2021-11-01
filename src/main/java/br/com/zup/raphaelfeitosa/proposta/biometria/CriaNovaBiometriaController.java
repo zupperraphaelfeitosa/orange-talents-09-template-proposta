@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
@@ -21,6 +18,7 @@ import java.net.URI;
 import java.util.Base64;
 
 @RestController
+@RequestMapping("/api/v1/cartoes")
 public class CriaNovaBiometriaController implements OfuscaDadoSensivel {
 
     private final Logger logger = LoggerFactory.getLogger(CriaNovaBiometriaController.class);
@@ -32,7 +30,7 @@ public class CriaNovaBiometriaController implements OfuscaDadoSensivel {
         this.cartaoRepository = cartaoRepository;
     }
 
-    @PostMapping("/api/v1/biometrias/{id}")
+    @PostMapping("/{id}/biometrias")
     @Transactional
     public ResponseEntity<Void> cadastrarNovaBiometrica(@PathVariable(name = "id") Long id,
                                                         @RequestBody @Valid BiometriaRequest request,

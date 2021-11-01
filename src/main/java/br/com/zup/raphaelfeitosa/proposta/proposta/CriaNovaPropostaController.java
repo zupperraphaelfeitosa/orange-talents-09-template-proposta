@@ -57,7 +57,7 @@ public class CriaNovaPropostaController implements OfuscaDadoSensivel {
             logger.info("Proposta documento={} atualizada para status={} ",
                     ofuscaDocumento(novaProposta.getDocument()), novaProposta.getStatus());
 
-        } catch (FeignException.InternalServerError exception) {
+        } catch (FeignException exception) {
             logger.error("Proposta  documento={}, não foi possível acessar o serviço de analise financeira. Erro: {}",
                     ofuscaDocumento(novaProposta.getDocument()), exception.getLocalizedMessage());
         }

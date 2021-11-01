@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Transactional
 public class CriaNovaBiometriaControllerTest {
 
-    private final String uri = "/api/v1/biometrias/";
+    private final String uri = "/api/v1/cartoes/";
     private Proposta proposta;
     private Cartao cartao;
 
@@ -77,7 +77,7 @@ public class CriaNovaBiometriaControllerTest {
         BiometriaRequest novaBiometria = new BiometriaRequest("YmlvbWV0cmlh");
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post(uri + cartao.getId())
+                        .post(uri + cartao.getId() + "/biometrias")
                         .content(gson.toJson(novaBiometria))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers
@@ -100,7 +100,7 @@ public class CriaNovaBiometriaControllerTest {
         BiometriaRequest novaBiometria = new BiometriaRequest(fingerPrint);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post(uri + cartao.getId())
+                        .post(uri + cartao.getId() + "/biometrias")
                         .content(gson.toJson(novaBiometria))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers
@@ -115,7 +115,7 @@ public class CriaNovaBiometriaControllerTest {
         BiometriaRequest novaBiometria = new BiometriaRequest("YmlvbWV0cmlh");
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post(uri + 50L)
+                        .post(uri + "50/biometrias")
                         .content(gson.toJson(novaBiometria))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers

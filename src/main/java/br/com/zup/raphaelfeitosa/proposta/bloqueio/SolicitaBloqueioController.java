@@ -2,34 +2,36 @@ package br.com.zup.raphaelfeitosa.proposta.bloqueio;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.CartaoRepository;
+import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ServicoCartaoApi;
 import br.com.zup.raphaelfeitosa.proposta.util.OfuscaDadoSensivel;
 import br.com.zup.raphaelfeitosa.proposta.validations.exceptions.ApiResponseException;
+import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/v1/cartoes")
 public class SolicitaBloqueioController implements OfuscaDadoSensivel {
 
     private final Logger logger = LoggerFactory.getLogger(SolicitaBloqueioController.class);
     private final CartaoRepository cartaoRepository;
     private final BloqueioRepository bloqueioRepository;
+    private final ServicoCartaoApi servicoCartaoApi;
 
-    public SolicitaBloqueioController(CartaoRepository cartaoRepository, BloqueioRepository bloqueioRepository) {
+    public SolicitaBloqueioController(CartaoRepository cartaoRepository, BloqueioRepository bloqueioRepository, ServicoCartaoApi servicoCartaoApi) {
         this.cartaoRepository = cartaoRepository;
         this.bloqueioRepository = bloqueioRepository;
+        this.servicoCartaoApi = servicoCartaoApi;
     }
 
-    @PostMapping("/api/v1/bloqueios/{id}")
+    @PostMapping("/{id}/bloqueios")
     @Transactional
     public ResponseEntity<Void> solicitaBloqueio(@PathVariable(name = "id") Long id,
                                                  @RequestHeader(value = "User-Agent") String userAgent,
@@ -43,10 +45,29 @@ public class SolicitaBloqueioController implements OfuscaDadoSensivel {
         if (bloqueio.isPresent())
             throw new ApiResponseException("bloqueio", "Esse cartão já está bloqueado", HttpStatus.UNPROCESSABLE_ENTITY);
 
-        Bloqueio bloqueiaCartao = new Bloqueio(request.getRemoteAddr(), userAgent, cartao.getNumero(), cartao);
-        cartao.bloquear();
-        bloqueioRepository.save(bloqueiaCartao);
+        notificacaoBloqueioCartao(cartao, userAgent, request.getRemoteAddr());
         logger.info("Bloqueio do cartão: {} realizado com sucesso!", ofuscaCartao(cartao.getNumero()));
         return ResponseEntity.ok().build();
+    }
+
+    private void notificacaoBloqueioCartao(Cartao cartao, String userAgent, String ipCliente) {
+        try {
+            RetornoBloqueio retornoBloqueio = servicoCartaoApi
+                    .notificacaoBloqueio(cartao.getNumero(), cartao.toNotificacaoBloqueio());
+
+            Bloqueio bloqueiaCartao = new Bloqueio(ipCliente, userAgent, cartao.getNumero(), cartao);
+            cartao.bloquear();
+            bloqueioRepository.save(bloqueiaCartao);
+            logger.info("Serviço cartão API - Cartão: {} ", retornoBloqueio.getResultado());
+
+        } catch (FeignException.UnprocessableEntity exception) {
+            logger.error("não foi possível realizar a notificaçao de bloqueio do cartão: {}  Erro: {}",
+                    ofuscaCartao(cartao.getNumero()), exception.getLocalizedMessage());
+            throw new ApiResponseException("cartoes", "Não foi possível realizar a notificação de bloqueio", HttpStatus.UNPROCESSABLE_ENTITY);
+
+        } catch (FeignException exception) {
+            logger.error("não foi possível acessar o serviço de cartoes. Erro: {}",
+                    exception.getLocalizedMessage());
+        }
     }
 }
