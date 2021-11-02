@@ -2,14 +2,18 @@ package br.com.zup.raphaelfeitosa.proposta.aviso;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.CartaoRepository;
+import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ServicoCartaoApi;
 import br.com.zup.raphaelfeitosa.proposta.proposta.Proposta;
 import br.com.zup.raphaelfeitosa.proposta.proposta.PropostaRepository;
 import br.com.zup.raphaelfeitosa.proposta.proposta.StatusProposta;
 import com.google.gson.Gson;
+import feign.FeignException;
 import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -49,6 +53,9 @@ public class CriaNovoAvisoViagemControllerTest {
     @Autowired
     private PropostaRepository propostaRepository;
 
+    @MockBean
+    private ServicoCartaoApi servicoCartaoApi;
+
     @BeforeEach
     void setUp() {
         proposta = new Proposta(
@@ -71,7 +78,11 @@ public class CriaNovoAvisoViagemControllerTest {
     @Test
     @Order(1)
     void deveriaCadastrarUmNovoAvisoViagemComRetorno200() throws Exception {
-        String novoAvisoViagem = "{\"destino\" : \"Belem\", \"dataTermino\" : \"" + LocalDate.now().plusDays(15) + "\"}";
+        RetornoAvisoViagemServicoCartaoApi retornoAvisoViagem = Mockito.mock(RetornoAvisoViagemServicoCartaoApi.class);
+        Mockito.when(retornoAvisoViagem.getResultado()).thenReturn(StatusAvisoViagem.CRIADO);
+        Mockito.when(servicoCartaoApi.avisoViagem(Mockito.any(), Mockito.any())).thenReturn(retornoAvisoViagem);
+
+        String novoAvisoViagem = "{\"destino\" : \"Belem\", \"validoAte\" : \"" + LocalDate.now().plusDays(15) + "\"}";
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(uri + cartao.getId() + "/aviso-viagem")
@@ -84,25 +95,43 @@ public class CriaNovoAvisoViagemControllerTest {
         assertTrue(avisoViagemRepository.findById(1L).isPresent());
     }
 
-    @Order(2)
     @Test
-    void naoDeveriaCadastrarUmAvisoDeViagemEmBrancoComRetorno400() throws Exception {
-        String destinoNuloOuVazio = "{\"destino\" : \"\", \"dataTermino\" : \"" + LocalDate.now().plusDays(15) + "\"}";
+    @Order(2)
+    void naoDeveriaCadastrarUmNovoAvisoViagemComRetorno422() throws Exception {
+        FeignException feignException = Mockito.mock(FeignException.class);
+        Mockito.when(servicoCartaoApi.avisoViagem(Mockito.any(), Mockito.any())).thenThrow(feignException);
+
+        String novoAvisoViagem = "{\"destino\" : \"Belem\", \"validoAte\" : \"" + LocalDate.now().plusDays(15) + "\"}";
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(uri + cartao.getId() + "/aviso-viagem")
                         .header("User-Agent", "PostmanRuntime/7.28.4")
-                        .content(destinoNuloOuVazio)
+                        .content(novoAvisoViagem)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers
                         .status()
-                        .isBadRequest());
+                        .isUnprocessableEntity());
     }
 
     @Order(3)
     @Test
-    void naoDeveriaCadastrarUmAvisoDeViagemComDataTerminoNoPassadoComRetorno400() throws Exception {
-        String destinoNuloOuVazio = "{\"destino\" : \"\", \"dataTermino\" : \"" + LocalDate.now().minusDays(5) + "\"}";
+    void naoDeveriaCadastrarUmAvisoDeViagemEmBrancoComRetorno400() throws Exception {
+        String destinoNuloOuVazio = "{\"destino\" : \"\", \"validoAte\" : \"" + LocalDate.now().plusDays(15) + "\"}";
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post(uri + cartao.getId() + "/aviso-viagem")
+                        .header("User-Agent", "PostmanRuntime/7.28.4")
+                        .content(destinoNuloOuVazio)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers
+                        .status()
+                        .isBadRequest());
+    }
+
+    @Order(4)
+    @Test
+    void naoDeveriaCadastrarUmAvisoDeViagemComvalidoAteNoPassadoComRetorno400() throws Exception {
+        String destinoNuloOuVazio = "{\"destino\" : \"\", \"validoAte\" : \"" + LocalDate.now().minusDays(5) + "\"}";
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(uri + cartao.getId() + "/aviso-viagem")
@@ -115,10 +144,10 @@ public class CriaNovoAvisoViagemControllerTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     void naoDeveriaCadastrarUmAvisoDeViagemComIdCartaoInvalidoComRetorno404() throws Exception {
 
-        String novoAvisoViagem = "{\"destino\" : \"Belem\", \"dataTermino\" : \"" + LocalDate.now().plusDays(15) + "\"}";
+        String novoAvisoViagem = "{\"destino\" : \"Belem\", \"validoAte\" : \"" + LocalDate.now().plusDays(15) + "\"}";
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(uri + 50L + "/aviso-viagem")

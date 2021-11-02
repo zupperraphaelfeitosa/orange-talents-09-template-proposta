@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
-public class RetornoCartaoResponse {
+public class RetornoCartaoCriadoServicoCartaoApi {
 
     @JsonProperty("id")
     private String numero;
@@ -16,7 +16,7 @@ public class RetornoCartaoResponse {
 
     private Integer limite;
 
-    public RetornoCartaoResponse(String numero, LocalDateTime emitidoEm, String titular, Integer limite) {
+    public RetornoCartaoCriadoServicoCartaoApi(String numero, LocalDateTime emitidoEm, String titular, Integer limite) {
         this.numero = numero;
         this.emitidoEm = emitidoEm;
         this.titular = titular;

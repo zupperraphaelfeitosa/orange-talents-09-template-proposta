@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Transactional
-public class SolicitaBloqueioControllerTest {
+public class SolicitaBloqueioServicoCartaoApiControllerTest {
 
     private final String URI = "/api/v1/cartoes/";
     private Proposta proposta;
@@ -78,9 +78,9 @@ public class SolicitaBloqueioControllerTest {
     @Test
     @Order(1)
     void deveriaCadastrarBloqueioDeCartaoComRetorno200() throws Exception {
-        RetornoBloqueio retornoBloqueio = Mockito.mock(RetornoBloqueio.class);
-        Mockito.when(retornoBloqueio.getResultado()).thenReturn(StatusBloqueio.BLOQUEADO);
-        Mockito.when(servicoCartaoApi.notificacaoBloqueio(Mockito.any(), Mockito.any())).thenReturn(retornoBloqueio);
+        RetornoBloqueioServicoCartaoApi retornoBloqueioServicoCartaoApi = Mockito.mock(RetornoBloqueioServicoCartaoApi.class);
+        Mockito.when(retornoBloqueioServicoCartaoApi.getResultado()).thenReturn(StatusBloqueio.BLOQUEADO);
+        Mockito.when(servicoCartaoApi.notificacaoBloqueio(Mockito.any(), Mockito.any())).thenReturn(retornoBloqueioServicoCartaoApi);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(URI + cartao.getId() + "/bloqueios")
@@ -98,7 +98,7 @@ public class SolicitaBloqueioControllerTest {
     @Test
     @Order(2)
     void naoDeveriaCadastrarUmBloqueioDeCartaoJaBloqueadoComRetorno422() throws Exception {
-        FeignException.UnprocessableEntity feignException = Mockito.mock(FeignException.UnprocessableEntity.class);
+        FeignException feignException = Mockito.mock(FeignException.class);
         Mockito.when(servicoCartaoApi.notificacaoBloqueio(Mockito.any(), Mockito.any())).thenThrow(feignException);
 
         mockMvc.perform(MockMvcRequestBuilders

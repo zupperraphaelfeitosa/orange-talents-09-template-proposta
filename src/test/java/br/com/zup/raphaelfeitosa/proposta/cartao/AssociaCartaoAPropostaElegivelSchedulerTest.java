@@ -55,13 +55,13 @@ public class AssociaCartaoAPropostaElegivelSchedulerTest {
         propostaNaoElegivel.adicionaRestricao(StatusProposta.NAO_ELEGIVEL);
         propostaRepository.save(propostaNaoElegivel);
 
-        RetornoCartaoResponse retornoCartaoResponse = new RetornoCartaoResponse(
+        RetornoCartaoCriadoServicoCartaoApi retornoCartaoCriadoServicoCartaoApi = new RetornoCartaoCriadoServicoCartaoApi(
                 "5812-4804-7265-6806",
                 LocalDateTime.now(),
                 "John Doe",
                 5000);
 
-        Mockito.when(servicoCartaoApi.solicitaCartao(Mockito.any())).thenReturn(retornoCartaoResponse);
+        Mockito.when(servicoCartaoApi.solicitaCartao(Mockito.any())).thenReturn(retornoCartaoCriadoServicoCartaoApi);
 
         associaCartaoAPropostaElegivelScheduler.associaCartaoAPropostaElegivel();
 

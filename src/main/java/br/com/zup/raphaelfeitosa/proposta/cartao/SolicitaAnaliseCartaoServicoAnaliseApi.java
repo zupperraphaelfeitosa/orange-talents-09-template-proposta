@@ -1,12 +1,12 @@
 package br.com.zup.raphaelfeitosa.proposta.cartao;
 
-public class SolicitaAnaliseCartao {
+public class SolicitaAnaliseCartaoServicoAnaliseApi {
 
     private String documento;
     private String nome;
     private String idProposta;
 
-    public SolicitaAnaliseCartao(String documento, String nome, String idProposta) {
+    public SolicitaAnaliseCartaoServicoAnaliseApi(String documento, String nome, String idProposta) {
         this.documento = documento;
         this.nome = nome;
         this.idProposta = idProposta;

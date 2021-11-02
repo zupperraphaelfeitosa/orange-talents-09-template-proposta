@@ -1,6 +1,6 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
-import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartao;
+import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartaoServicoAnaliseApi;
 import br.com.zup.raphaelfeitosa.proposta.cartao.StatusAnaliseCartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ServicoAnaliseApi;
 import com.google.gson.Gson;
@@ -57,11 +57,11 @@ public class CriaNovaPropostaControllerTest {
     @Order(1)
     void deveriaCadastrarNovaPropostaComRetornoSEM_RESTRICAOERetorno201() throws Exception {
 
-        RetornoAnaliseCartao retornoAnaliseCartao = new RetornoAnaliseCartao("761.159.900-33", "John Doe", StatusAnaliseCartao.SEM_RESTRICAO, Long.toString(1L));
+        RetornoAnaliseCartaoServicoAnaliseApi retornoAnaliseCartaoServicoAnaliseApi = new RetornoAnaliseCartaoServicoAnaliseApi("761.159.900-33", "John Doe", StatusAnaliseCartao.SEM_RESTRICAO, Long.toString(1L));
         PropostaRequest novaProposta = new PropostaRequest(
                 "John Doe", "johndoe@gmail.com", "761.159.900-33", BigDecimal.valueOf(1000), "Rua treze de maio");
 
-        Mockito.when(servicoAnaliseApi.solicitaVerificacao(Mockito.any())).thenReturn(retornoAnaliseCartao);
+        Mockito.when(servicoAnaliseApi.solicitaVerificacao(Mockito.any())).thenReturn(retornoAnaliseCartaoServicoAnaliseApi);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(uri)

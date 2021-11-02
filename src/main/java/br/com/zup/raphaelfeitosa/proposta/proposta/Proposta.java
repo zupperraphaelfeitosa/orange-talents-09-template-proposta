@@ -1,8 +1,8 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
-import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartao;
-import br.com.zup.raphaelfeitosa.proposta.cartao.SolicitaAnaliseCartao;
+import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartaoServicoAnaliseApi;
+import br.com.zup.raphaelfeitosa.proposta.cartao.SolicitaAnaliseCartaoServicoAnaliseApi;
 import br.com.zup.raphaelfeitosa.proposta.cartao.StatusAnaliseCartao;
 
 import javax.persistence.*;
@@ -82,8 +82,8 @@ public class Proposta {
         return cartao;
     }
 
-    public SolicitaAnaliseCartao toSolicitaAnaliseCartao() {
-        return new SolicitaAnaliseCartao(document, name, id.toString());
+    public SolicitaAnaliseCartaoServicoAnaliseApi toSolicitaAnaliseCartao() {
+        return new SolicitaAnaliseCartaoServicoAnaliseApi(document, name, id.toString());
     }
 
     public void adicionaRestricao(StatusProposta status) {
@@ -94,8 +94,8 @@ public class Proposta {
         this.cartao = cartao;
     }
 
-    public void verificaRetornoAnalise(RetornoAnaliseCartao retornoAnaliseCartao) {
-        if (retornoAnaliseCartao != null && retornoAnaliseCartao.getResultadoSolicitacao().equals(StatusAnaliseCartao.SEM_RESTRICAO)) {
+    public void verificaRetornoAnalise(RetornoAnaliseCartaoServicoAnaliseApi retornoAnaliseCartaoServicoAnaliseApi) {
+        if (retornoAnaliseCartaoServicoAnaliseApi != null && retornoAnaliseCartaoServicoAnaliseApi.getResultadoSolicitacao().equals(StatusAnaliseCartao.SEM_RESTRICAO)) {
             adicionaRestricao(StatusProposta.ELEGIVEL);
         }
     }

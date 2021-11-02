@@ -1,10 +1,10 @@
 package br.com.zup.raphaelfeitosa.proposta.bloqueio;
 
-public class SolicitaBloqueio {
+public class SolicitaBloqueioServicoCartaoApi {
 
     private String sistemaResponsavel;
 
-    public SolicitaBloqueio(String sistemaResponsavel) {
+    public SolicitaBloqueioServicoCartaoApi(String sistemaResponsavel) {
         this.sistemaResponsavel = sistemaResponsavel;
     }
 

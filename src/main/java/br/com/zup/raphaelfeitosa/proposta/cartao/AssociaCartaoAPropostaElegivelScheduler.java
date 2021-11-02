@@ -32,7 +32,7 @@ public class AssociaCartaoAPropostaElegivelScheduler implements OfuscaDadoSensiv
         Collection<Proposta> propostasElegiveisSemCartao = propostaRepository.findFirst10ByStatusAndCartao(StatusProposta.ELEGIVEL, null);
         propostasElegiveisSemCartao.forEach(proposta -> {
             try {
-                RetornoCartaoResponse numeroCartao = servicoCartaoApi.solicitaCartao(proposta.getId());
+                RetornoCartaoCriadoServicoCartaoApi numeroCartao = servicoCartaoApi.solicitaCartao(proposta.getId());
                 Cartao cartao = numeroCartao.toCartao(proposta);
                 proposta.associaCartao(cartao);
                 propostaRepository.save(proposta);

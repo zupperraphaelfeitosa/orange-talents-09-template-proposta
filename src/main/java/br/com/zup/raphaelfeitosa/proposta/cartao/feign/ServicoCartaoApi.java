@@ -1,8 +1,10 @@
 package br.com.zup.raphaelfeitosa.proposta.cartao.feign;
 
-import br.com.zup.raphaelfeitosa.proposta.bloqueio.RetornoBloqueio;
-import br.com.zup.raphaelfeitosa.proposta.bloqueio.SolicitaBloqueio;
-import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoCartaoResponse;
+import br.com.zup.raphaelfeitosa.proposta.aviso.AvisoViagemRequest;
+import br.com.zup.raphaelfeitosa.proposta.aviso.RetornoAvisoViagemServicoCartaoApi;
+import br.com.zup.raphaelfeitosa.proposta.bloqueio.RetornoBloqueioServicoCartaoApi;
+import br.com.zup.raphaelfeitosa.proposta.bloqueio.SolicitaBloqueioServicoCartaoApi;
+import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoCartaoCriadoServicoCartaoApi;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +12,12 @@ import org.springframework.web.bind.annotation.*;
 public interface ServicoCartaoApi {
 
     @GetMapping(consumes = "application/json")
-    RetornoCartaoResponse solicitaCartao(@RequestParam Long idProposta);
+    RetornoCartaoCriadoServicoCartaoApi solicitaCartao(@RequestParam Long idProposta);
 
     @PostMapping(value = "/{id}/bloqueios", consumes = "application/json")
-    RetornoBloqueio notificacaoBloqueio(@PathVariable(name = "id") String id, @RequestBody SolicitaBloqueio request);
+    RetornoBloqueioServicoCartaoApi notificacaoBloqueio(@PathVariable(name = "id") String id, @RequestBody SolicitaBloqueioServicoCartaoApi request);
+
+    @PostMapping(value = "/{id}/avisos", consumes = "application/json")
+    RetornoAvisoViagemServicoCartaoApi avisoViagem(@PathVariable(name = "id") String id, @RequestBody AvisoViagemRequest request);
 
 }

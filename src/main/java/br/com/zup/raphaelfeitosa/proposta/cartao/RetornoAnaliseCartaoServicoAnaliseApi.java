@@ -1,6 +1,6 @@
 package br.com.zup.raphaelfeitosa.proposta.cartao;
 
-public class RetornoAnaliseCartao {
+public class RetornoAnaliseCartaoServicoAnaliseApi {
 
     private String documento;
     private String nome;
@@ -8,7 +8,7 @@ public class RetornoAnaliseCartao {
     private String idProposta;
 
 
-    public RetornoAnaliseCartao(String documento, String nome, StatusAnaliseCartao resultadoSolicitacao, String idProposta) {
+    public RetornoAnaliseCartaoServicoAnaliseApi(String documento, String nome, StatusAnaliseCartao resultadoSolicitacao, String idProposta) {
         this.documento = documento;
         this.nome = nome;
         this.resultadoSolicitacao = resultadoSolicitacao;

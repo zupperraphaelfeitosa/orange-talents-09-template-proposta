@@ -1,6 +1,6 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
-import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartao;
+import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartaoServicoAnaliseApi;
 import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ServicoAnaliseApi;
 import br.com.zup.raphaelfeitosa.proposta.util.OfuscaDadoSensivel;
 import feign.FeignException;
@@ -44,22 +44,18 @@ public class CriaNovaPropostaController implements OfuscaDadoSensivel {
 
     private void verificaSolicitacaoDeAnalise(Proposta novaProposta) {
         try {
-            RetornoAnaliseCartao retornoAnaliseCartao = servicoAnaliseApi
+            RetornoAnaliseCartaoServicoAnaliseApi retornoAnaliseCartaoServicoAnaliseApi = servicoAnaliseApi
                     .solicitaVerificacao(novaProposta.toSolicitaAnaliseCartao());
-            novaProposta.verificaRetornoAnalise(retornoAnaliseCartao);
-            propostaRepository.save(novaProposta);
-            logger.info("Proposta documento={} atualizada para status={} ",
-                    ofuscaDocumento(novaProposta.getDocument()), novaProposta.getStatus());
-
-        } catch (FeignException.UnprocessableEntity exception) {
-            novaProposta.adicionaRestricao(StatusProposta.NAO_ELEGIVEL);
+            novaProposta.verificaRetornoAnalise(retornoAnaliseCartaoServicoAnaliseApi);
             propostaRepository.save(novaProposta);
             logger.info("Proposta documento={} atualizada para status={} ",
                     ofuscaDocumento(novaProposta.getDocument()), novaProposta.getStatus());
 
         } catch (FeignException exception) {
-            logger.error("Proposta  documento={}, não foi possível acessar o serviço de analise financeira. Erro: {}",
-                    ofuscaDocumento(novaProposta.getDocument()), exception.getLocalizedMessage());
+            novaProposta.adicionaRestricao(StatusProposta.NAO_ELEGIVEL);
+            propostaRepository.save(novaProposta);
+            logger.info("Proposta documento={} atualizada para status={} ",
+                    ofuscaDocumento(novaProposta.getDocument()), novaProposta.getStatus());
         }
     }
 

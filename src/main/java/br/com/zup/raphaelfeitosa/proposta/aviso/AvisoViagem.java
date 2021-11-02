@@ -19,7 +19,7 @@ public class AvisoViagem {
     private String destino;
 
     @Column(nullable = false)
-    private LocalDate dataTermino;
+    private LocalDate validoAte;
 
     @CreationTimestamp
     private LocalDateTime instante;
@@ -37,9 +37,9 @@ public class AvisoViagem {
     @Deprecated
     public AvisoViagem(){}
 
-    public AvisoViagem(String destino, LocalDate dataTermino, String ipCliente, String userAgent, Cartao cartao) {
+    public AvisoViagem(String destino, LocalDate validoAte, String ipCliente, String userAgent, Cartao cartao) {
         this.destino = destino;
-        this.dataTermino = dataTermino;
+        this.validoAte = validoAte;
         this.ipCliente = ipCliente;
         this.userAgent = userAgent;
         this.cartao = cartao;

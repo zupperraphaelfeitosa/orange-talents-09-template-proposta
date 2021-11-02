@@ -1,6 +1,6 @@
 package br.com.zup.raphaelfeitosa.proposta.bloqueio;
 
-public class RetornoBloqueio {
+public class RetornoBloqueioServicoCartaoApi {
 
     private StatusBloqueio resultado;
 

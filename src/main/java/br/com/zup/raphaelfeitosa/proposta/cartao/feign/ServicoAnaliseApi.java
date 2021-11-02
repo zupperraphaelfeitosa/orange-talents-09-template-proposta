@@ -1,7 +1,7 @@
 package br.com.zup.raphaelfeitosa.proposta.cartao.feign;
 
-import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartao;
-import br.com.zup.raphaelfeitosa.proposta.cartao.SolicitaAnaliseCartao;
+import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartaoServicoAnaliseApi;
+import br.com.zup.raphaelfeitosa.proposta.cartao.SolicitaAnaliseCartaoServicoAnaliseApi;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface ServicoAnaliseApi {
 
     @PostMapping(consumes = "application/json")
-    RetornoAnaliseCartao solicitaVerificacao(@RequestBody SolicitaAnaliseCartao solicitaAnaliseCartao);
+    RetornoAnaliseCartaoServicoAnaliseApi solicitaVerificacao(@RequestBody SolicitaAnaliseCartaoServicoAnaliseApi solicitaAnaliseCartaoServicoAnaliseApi);
 }

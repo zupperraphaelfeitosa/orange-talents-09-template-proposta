@@ -52,22 +52,18 @@ public class SolicitaBloqueioController implements OfuscaDadoSensivel {
 
     private void notificacaoBloqueioCartao(Cartao cartao, String userAgent, String ipCliente) {
         try {
-            RetornoBloqueio retornoBloqueio = servicoCartaoApi
+            RetornoBloqueioServicoCartaoApi retornoBloqueioServicoCartaoApi = servicoCartaoApi
                     .notificacaoBloqueio(cartao.getNumero(), cartao.toNotificacaoBloqueio());
 
             Bloqueio bloqueiaCartao = new Bloqueio(ipCliente, userAgent, cartao.getNumero(), cartao);
             cartao.bloquear();
             bloqueioRepository.save(bloqueiaCartao);
-            logger.info("Serviço cartão API - Cartão: {} ", retornoBloqueio.getResultado());
+            logger.info("Serviço cartão API - Cartão: {} ", retornoBloqueioServicoCartaoApi.getResultado());
 
-        } catch (FeignException.UnprocessableEntity exception) {
+        } catch (FeignException exception) {
             logger.error("não foi possível realizar a notificaçao de bloqueio do cartão: {}  Erro: {}",
                     ofuscaCartao(cartao.getNumero()), exception.getLocalizedMessage());
             throw new ApiResponseException("cartoes", "Não foi possível realizar a notificação de bloqueio", HttpStatus.UNPROCESSABLE_ENTITY);
-
-        } catch (FeignException exception) {
-            logger.error("não foi possível acessar o serviço de cartoes. Erro: {}",
-                    exception.getLocalizedMessage());
         }
     }
 }
