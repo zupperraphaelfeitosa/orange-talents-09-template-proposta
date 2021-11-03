@@ -1,8 +1,12 @@
 package br.com.zup.raphaelfeitosa.proposta.cartao;
 
+import br.com.zup.raphaelfeitosa.proposta.aviso.AvisoViagemRequest;
+import br.com.zup.raphaelfeitosa.proposta.aviso.SolicitaAvisoViagemServicoCartaoApi;
 import br.com.zup.raphaelfeitosa.proposta.biometria.Biometria;
 import br.com.zup.raphaelfeitosa.proposta.bloqueio.Bloqueio;
 import br.com.zup.raphaelfeitosa.proposta.bloqueio.SolicitaBloqueioServicoCartaoApi;
+import br.com.zup.raphaelfeitosa.proposta.carteira.CarteiraRequest;
+import br.com.zup.raphaelfeitosa.proposta.carteira.SolicitaInclusaoCartaieraServicoCartaoApi;
 import br.com.zup.raphaelfeitosa.proposta.proposta.Proposta;
 
 import javax.persistence.*;
@@ -78,4 +82,11 @@ public class Cartao {
         return new SolicitaBloqueioServicoCartaoApi("proposta-api");
     }
 
+    public SolicitaInclusaoCartaieraServicoCartaoApi toSolicitaInclusaoCarteira(CarteiraRequest request) {
+        return new SolicitaInclusaoCartaieraServicoCartaoApi(request.getEmail(), request.getCarteira().toString());
+    }
+
+    public SolicitaAvisoViagemServicoCartaoApi toSolicitaAvisoViagem(AvisoViagemRequest request) {
+        return new SolicitaAvisoViagemServicoCartaoApi(request.getDestino(), request.getValidoAte().toString());
+    }
 }

@@ -33,7 +33,7 @@ public class SolicitaBloqueioController implements OfuscaDadoSensivel {
 
     @PostMapping("/{id}/bloqueios")
     @Transactional
-    public ResponseEntity<Void> solicitaBloqueio(@PathVariable(name = "id") Long id,
+    public ResponseEntity<?> solicitaBloqueio(@PathVariable(name = "id") Long id,
                                                  @RequestHeader(value = "User-Agent") String userAgent,
                                                  HttpServletRequest request) {
         Cartao cartao = cartaoRepository.findById(id)

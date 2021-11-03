@@ -35,7 +35,7 @@ public class CriaNovoAvisoViagemController implements OfuscaDadoSensivel {
 
     @PostMapping("/{id}/aviso-viagem")
     @Transactional
-    public ResponseEntity<Void> criarNovoAvisoViagem(@PathVariable(name = "id") Long id,
+    public ResponseEntity<?> criarNovoAvisoViagem(@PathVariable(name = "id") Long id,
                                                      @RequestHeader(value = "User-Agent") String userAgent,
                                                      HttpServletRequest request,
                                                      @RequestBody @Valid AvisoViagemRequest avisoViagemRequest) {
@@ -49,9 +49,10 @@ public class CriaNovoAvisoViagemController implements OfuscaDadoSensivel {
         return ResponseEntity.ok().build();
     }
 
-    public void avisoViagem(Cartao cartao, AvisoViagemRequest avisoViagemRequest, String userAgent, String ipCliente) {
+    private void avisoViagem(Cartao cartao, AvisoViagemRequest avisoViagemRequest, String userAgent, String ipCliente) {
         try {
-            RetornoAvisoViagemServicoCartaoApi retornoAviso = servicoCartaoApi.avisoViagem(cartao.getNumero(), avisoViagemRequest);
+            RetornoAvisoViagemServicoCartaoApi retornoAviso = servicoCartaoApi.avisoViagem(
+                    cartao.getNumero(), cartao.toSolicitaAvisoViagem(avisoViagemRequest));
             AvisoViagem novoAvisoViagem = avisoViagemRequest.toAvisoViagem(ipCliente, userAgent, cartao);
             avisoViagemRepository.save(novoAvisoViagem);
             logger.info("Serviço cartão API - Aviso Viagem: {} ", retornoAviso.getResultado());
