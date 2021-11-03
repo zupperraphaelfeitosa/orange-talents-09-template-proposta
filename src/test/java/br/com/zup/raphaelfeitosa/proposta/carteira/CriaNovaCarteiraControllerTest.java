@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -79,14 +78,15 @@ public class CriaNovaCarteiraControllerTest {
         cartaoRepository.save(cartao);
     }
 
-    @Test
     @Order(1)
-    void deveriaCadastrarUmNovaCarteiraComRetorno200() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {"PAYPAL", "SAMSUNG_PAY"})
+    void deveriaCadastrarUmNovaCarteiraComRetorno200(String carteira) throws Exception {
         RetornoCateiraServicoCartaoApi retornoCarteira = Mockito.mock(RetornoCateiraServicoCartaoApi.class);
         Mockito.when(retornoCarteira.getResultado()).thenReturn(StatusCarteira.ASSOCIADA);
         Mockito.when(servicoCartaoApi.associaCartaoACarteira(Mockito.any(), Mockito.any())).thenReturn(retornoCarteira);
 
-        CarteiraRequest novaCarteira = new CarteiraRequest("johndoe@gmail.com", TipoCarteira.PAYPAL);
+        CarteiraRequest novaCarteira = new CarteiraRequest("johndoe@gmail.com", TipoCarteira.valueOf(carteira));
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(uri + cartao.getId() + "/carteiras")
@@ -95,7 +95,7 @@ public class CriaNovaCarteiraControllerTest {
                 .andExpect(MockMvcResultMatchers
                         .status()
                         .isCreated());
-        assertTrue(carteiraRepository.findByCartaoAndCarteira(cartao, TipoCarteira.PAYPAL).isPresent());
+        assertTrue(carteiraRepository.findByCartaoAndCarteira(cartao, TipoCarteira.valueOf(carteira)).isPresent());
     }
 
     @Test
