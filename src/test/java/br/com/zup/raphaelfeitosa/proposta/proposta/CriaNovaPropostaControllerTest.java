@@ -2,7 +2,7 @@ package br.com.zup.raphaelfeitosa.proposta.proposta;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartaoServicoAnaliseApi;
 import br.com.zup.raphaelfeitosa.proposta.cartao.StatusAnaliseCartao;
-import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ServicoAnaliseApi;
+import br.com.zup.raphaelfeitosa.proposta.feign.ServicoAnaliseApi;
 import com.google.gson.Gson;
 import feign.FeignException;
 import org.junit.jupiter.api.*;

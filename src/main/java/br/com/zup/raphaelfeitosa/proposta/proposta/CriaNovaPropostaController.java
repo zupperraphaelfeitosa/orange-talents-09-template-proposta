@@ -1,8 +1,8 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartaoServicoAnaliseApi;
-import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ServicoAnaliseApi;
-import br.com.zup.raphaelfeitosa.proposta.util.OfuscaDadoSensivel;
+import br.com.zup.raphaelfeitosa.proposta.feign.ServicoAnaliseApi;
+import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

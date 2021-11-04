@@ -1,6 +1,6 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
-import br.com.zup.raphaelfeitosa.proposta.util.OfuscaDadoSensivel;
+import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 
 import java.math.BigDecimal;
 

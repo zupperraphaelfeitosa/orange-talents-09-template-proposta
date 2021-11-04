@@ -1,9 +1,9 @@
 server:
-  port: 8080
+  port: ${APPLICATION_PORT:8080}
 spring:
   application:
     name: proposta_api
-# JPA
+  # JPA
   jpa:
     show-sql: true
     hibernate:
@@ -11,19 +11,20 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-# Datasource - MySQL
+  # Datasource - MySQL
   datasource:
-    url: jdbc:mysql://localhost:3306/proposta_api_db?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true&sslMode=DISABLED
-    username: root
-    password: password
+    url: ${BANCO_URL:jdbc:mysql://localhost:3306/proposta_api_db?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
-# Key Cloack
+  # Key Cloack
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:18080/auth/realms/proposta
-          jwk-set-uri: http://localhost:18080/auth/realms/proposta/protocol/openid-connect/certs
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:18080/auth/realms/proposta}
+          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:18080/auth/realms/proposta/protocol/openid-connect/certs}
 
 # Feign clients URL
 feign:
@@ -33,10 +34,8 @@ feign:
         connection-timeout: 400
         read-timeout: 400
   servico:
-    analise:
-      api-solicitacao: http://localhost:9999/api/solicitacao
-    cartao:
-      api-solicitacao: http://localhost:8888/api/cartoes
+    analise: ${SOLICITACAO_URL:http://localhost:9999/api/solicitacao}
+    cartao: ${CARTOES_URL:http://localhost:8888/api/cartoes}
 
 # Scheduled
 scheduled:
@@ -54,7 +53,17 @@ management:
       enable: true
   metrics:
     tags:
-      aplicacao: serviço de proposta
-      ambiente: desenvolvimento
+      aplicacao: ${spring.application.name:proposta_api}
+      ambiente: ${AMBIENTE:desenvolvimento}
   endpoint:
     show-details: always
+
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: ${JAEGER_ENABLED:true}
+    service-name: ${SPRING.APPLICATION.NAME:proposta_api}
+    http-sender:
+      url: ${JAEGER_ENDPOINT:http://localhost:14268/api/traces}
+    probabilistic-sampler:
+      sampling-rate: ${JAEGER_SAMPLER:1}

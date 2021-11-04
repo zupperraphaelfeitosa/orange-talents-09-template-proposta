@@ -1,4 +1,4 @@
-package br.com.zup.raphaelfeitosa.proposta.cartao.feign;
+package br.com.zup.raphaelfeitosa.proposta.feign;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartaoServicoAnaliseApi;
 import br.com.zup.raphaelfeitosa.proposta.cartao.SolicitaAnaliseCartaoServicoAnaliseApi;
@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "servico-analise", url = "${feign.servico.analise.api-solicitacao}")
+@FeignClient(name = "servico-analise", url = "${feign.servico.analise}")
 public interface ServicoAnaliseApi {
 
     @PostMapping(consumes = "application/json")

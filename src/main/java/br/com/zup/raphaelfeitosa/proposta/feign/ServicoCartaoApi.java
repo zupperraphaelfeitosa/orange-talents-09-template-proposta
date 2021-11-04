@@ -1,4 +1,4 @@
-package br.com.zup.raphaelfeitosa.proposta.cartao.feign;
+package br.com.zup.raphaelfeitosa.proposta.feign;
 
 import br.com.zup.raphaelfeitosa.proposta.aviso.RetornoAvisoViagemServicoCartaoApi;
 import br.com.zup.raphaelfeitosa.proposta.aviso.SolicitaAvisoViagemServicoCartaoApi;
@@ -10,7 +10,7 @@ import br.com.zup.raphaelfeitosa.proposta.carteira.SolicitaInclusaoCartaieraServ
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "servico-cartao", url = "${feign.servico.cartao.api-solicitacao}")
+@FeignClient(name = "servico-cartao", url = "${feign.servico.cartao}")
 public interface ServicoCartaoApi {
 
     @GetMapping(consumes = "application/json")

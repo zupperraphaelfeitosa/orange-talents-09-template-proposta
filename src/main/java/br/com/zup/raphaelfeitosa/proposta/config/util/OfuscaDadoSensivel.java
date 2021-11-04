@@ -1,4 +1,4 @@
-package br.com.zup.raphaelfeitosa.proposta.util;
+package br.com.zup.raphaelfeitosa.proposta.config.util;
 
 public interface OfuscaDadoSensivel {
 

@@ -1,10 +1,10 @@
 package br.com.zup.raphaelfeitosa.proposta.cartao;
 
-import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ServicoCartaoApi;
+import br.com.zup.raphaelfeitosa.proposta.feign.ServicoCartaoApi;
 import br.com.zup.raphaelfeitosa.proposta.proposta.Proposta;
 import br.com.zup.raphaelfeitosa.proposta.proposta.PropostaRepository;
 import br.com.zup.raphaelfeitosa.proposta.proposta.StatusProposta;
-import br.com.zup.raphaelfeitosa.proposta.util.OfuscaDadoSensivel;
+import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

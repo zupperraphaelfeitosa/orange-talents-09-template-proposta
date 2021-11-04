@@ -3,7 +3,7 @@ package br.com.zup.raphaelfeitosa.proposta.biometria;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.CartaoRepository;
-import br.com.zup.raphaelfeitosa.proposta.util.OfuscaDadoSensivel;
+import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 import br.com.zup.raphaelfeitosa.proposta.validations.exceptions.ApiResponseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

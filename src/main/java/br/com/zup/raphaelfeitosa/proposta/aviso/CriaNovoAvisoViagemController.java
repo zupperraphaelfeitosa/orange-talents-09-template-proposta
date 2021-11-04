@@ -2,8 +2,8 @@ package br.com.zup.raphaelfeitosa.proposta.aviso;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.CartaoRepository;
-import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ServicoCartaoApi;
-import br.com.zup.raphaelfeitosa.proposta.util.OfuscaDadoSensivel;
+import br.com.zup.raphaelfeitosa.proposta.feign.ServicoCartaoApi;
+import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 import br.com.zup.raphaelfeitosa.proposta.validations.exceptions.ApiResponseException;
 import feign.FeignException;
 import org.slf4j.Logger;

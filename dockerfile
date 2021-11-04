@@ -9,4 +9,4 @@ RUN mvn -f /usr/src/app/pom.xml clean package -DskipTests
 FROM openjdk:11
 COPY --from=builder /usr/src/app/target/*.jar /usr/app/app.jar
 EXPOSE 8081
-ENTRYPOINT ["java","-Dspring.profiles.active=docker","-jar","/usr/app/app.jar"]
+ENTRYPOINT ["java","-jar","/usr/app/app.jar"]

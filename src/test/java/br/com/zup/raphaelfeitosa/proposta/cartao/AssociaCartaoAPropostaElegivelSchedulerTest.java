@@ -1,6 +1,6 @@
 package br.com.zup.raphaelfeitosa.proposta.cartao;
 
-import br.com.zup.raphaelfeitosa.proposta.cartao.feign.ServicoCartaoApi;
+import br.com.zup.raphaelfeitosa.proposta.feign.ServicoCartaoApi;
 import br.com.zup.raphaelfeitosa.proposta.proposta.Proposta;
 import br.com.zup.raphaelfeitosa.proposta.proposta.PropostaRepository;
 import br.com.zup.raphaelfeitosa.proposta.proposta.StatusProposta;
