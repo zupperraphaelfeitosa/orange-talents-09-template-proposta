@@ -9,16 +9,18 @@ services:
     restart: on-failure
     container_name: proposta_api
     ports:
-      - "8081:8081"
+      - 8081:8081
     depends_on:
       - proposta_api_db
     environment:
       BANCO_URL: jdbc:mysql://proposta_api_db:3306/proposta_api_db?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC
       CARTOES_URL: http://contas:8888/api/cartoes
       SOLICITACAO_URL: http://analise:9999/api/solicitacao
+      JAEGER_ENABLED:
       JAEGER_ENDPOINT: http://jaeger:14268/api/traces
-      KEYCLOAK_ISSUER_URI: http://keycloak:8080/auth/realms/proposta
-      KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/proposta/protocol/openid-connect/certs
+      JAEGER_SAMPLER: 1
+      KEYCLOAK_ISSUER_URI: http://172.17.0.1:8080/auth/realms/proposta
+      KEYCLOAK_JWKS_URI: http://172.17.0.1:8080/auth/realms/proposta/protocol/openid-connect/certs
       APPLICATION_PORT: 8081
       DB_USER: root
       DB_PASSWORD: password
@@ -29,7 +31,7 @@ services:
     restart: always
     container_name: proposta_api_db
     ports:
-      - "3306:3306"
+      - 3306:3306
     environment:
       - MYSQL_DATABASE=proposta_api_db
       - MYSQL_ROOT_PASSWORD=password

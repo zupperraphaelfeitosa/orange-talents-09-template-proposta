@@ -47,7 +47,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: prometheus,health,info
+        include: info,health,metrics,prometheus
         exclude: env,beans
     prometheus:
       enable: true

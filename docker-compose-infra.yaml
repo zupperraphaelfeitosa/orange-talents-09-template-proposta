@@ -111,11 +111,11 @@ services:
   prometheus:
     image: prom/prometheus:v2.22.0
     volumes:
-      #  - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-volume:/etc/prometheus/
     network_mode: bridge
     ports:
-      - "9090:9090"
+      - 9090:9090
 
   grafana:
     image: grafana/grafana:7.3.4
@@ -123,7 +123,7 @@ services:
       - grafana-volume:/var/lib/grafana
     network_mode: bridge
     ports:
-      - "3000:3000"
+      - 3000:3000
     depends_on:
       - prometheus
 
