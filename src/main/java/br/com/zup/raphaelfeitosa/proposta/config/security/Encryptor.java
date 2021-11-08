@@ -1,16 +1,17 @@
 package br.com.zup.raphaelfeitosa.proposta.config.security;
 
+import org.springframework.stereotype.Component;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.util.Base64;
 
-@Converter
+@Component
 public class Encryptor implements AttributeConverter<String, String> {
 
     private static final String AES = "AES";
