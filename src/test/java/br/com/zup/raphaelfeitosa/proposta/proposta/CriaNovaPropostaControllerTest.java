@@ -76,7 +76,6 @@ public class CriaNovaPropostaControllerTest {
         Proposta propostaSalva = propostaRepository.findByEmail("johndoe@gmail.com").get();
 
         assertEquals("johndoe@gmail.com", propostaSalva.getEmail());
-        assertEquals("761.159.900-33", propostaSalva.getDocument());
         assertEquals(StatusProposta.ELEGIVEL, propostaSalva.getStatus());
     }
 
@@ -101,7 +100,6 @@ public class CriaNovaPropostaControllerTest {
         Proposta propostaSalva = propostaRepository.findByEmail("johndoe@gmail.com").get();
 
         assertEquals("johndoe@gmail.com", propostaSalva.getEmail());
-        assertEquals("317.357.970-49", propostaSalva.getDocument());
         assertEquals(StatusProposta.NAO_ELEGIVEL, propostaSalva.getStatus());
     }
 
@@ -211,7 +209,5 @@ public class CriaNovaPropostaControllerTest {
                 .andExpect(MockMvcResultMatchers
                         .status()
                         .isUnprocessableEntity());
-
-        assertTrue(propostaRepository.findByDocument("317.357.970-49").isPresent());
     }
 }

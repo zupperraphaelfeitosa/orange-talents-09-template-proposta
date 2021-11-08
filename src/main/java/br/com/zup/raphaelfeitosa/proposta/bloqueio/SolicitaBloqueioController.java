@@ -41,7 +41,7 @@ public class SolicitaBloqueioController implements OfuscaDadoSensivel {
                         "idCartao", "Id do cartão é inválido", HttpStatus.NOT_FOUND));
         logger.info("Cartão de id: {} localizado!", cartao.getId());
 
-        Optional<Bloqueio> bloqueio = bloqueioRepository.findByNumero(cartao.getNumero());
+        Optional<Bloqueio> bloqueio = bloqueioRepository.findByCartao_id(id);
         if (bloqueio.isPresent())
             throw new ApiResponseException("bloqueio", "Esse cartão já está bloqueado", HttpStatus.UNPROCESSABLE_ENTITY);
 
@@ -55,7 +55,7 @@ public class SolicitaBloqueioController implements OfuscaDadoSensivel {
             RetornoBloqueioServicoCartaoApi retornoBloqueioServicoCartaoApi = servicoCartaoApi
                     .notificacaoBloqueio(cartao.getNumero(), cartao.toNotificacaoBloqueio());
 
-            Bloqueio bloqueiaCartao = new Bloqueio(ipCliente, userAgent, cartao.getNumero(), cartao);
+            Bloqueio bloqueiaCartao = new Bloqueio(ipCliente, userAgent, cartao);
             cartao.bloquear();
             bloqueioRepository.save(bloqueiaCartao);
             logger.info("Serviço cartão API - Cartão: {} ", retornoBloqueioServicoCartaoApi.getResultado());

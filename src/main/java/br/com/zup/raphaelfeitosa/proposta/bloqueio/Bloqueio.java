@@ -23,9 +23,6 @@ public class Bloqueio {
     @Column(nullable = false)
     private String userAgent;
 
-    @Column(nullable = false)
-    private String numero;
-
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cartao", nullable = false)
     private Cartao cartao;
@@ -34,10 +31,9 @@ public class Bloqueio {
     public Bloqueio() {
     }
 
-    public Bloqueio(String ipCLiente, String userAgent, String numero, Cartao cartao) {
+    public Bloqueio(String ipCLiente, String userAgent, Cartao cartao) {
         this.ipCLiente = ipCLiente;
         this.userAgent = userAgent;
-        this.numero = numero;
         this.cartao = cartao;
     }
 }

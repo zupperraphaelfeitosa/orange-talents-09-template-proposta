@@ -8,22 +8,21 @@ import org.springframework.http.HttpStatus;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ExistsDocumentValidator implements ConstraintValidator<ExistDocument, String> {
+public class ExistsDocumentoValidator implements ConstraintValidator<ExistDocumento, String> {
 
     @Autowired
     private PropostaRepository propostaRepository;
 
     @Override
-    public void initialize(ExistDocument constraintAnnotation) {
+    public void initialize(ExistDocumento constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
     @Override
-    public boolean isValid(String document, ConstraintValidatorContext context) {
-        if (document != null) {
-            if (!propostaRepository.findByDocument(document).isEmpty()) {
-                throw new ApiResponseException("document", "Documento já vinculado em uma proposta", HttpStatus.UNPROCESSABLE_ENTITY);
-            }
+    public boolean isValid(String documento, ConstraintValidatorContext context) {
+        if (documento != null) {
+            if (propostaRepository.findByDocumento(documento).isPresent())
+                throw new ApiResponseException("documento", "Documento já vinculado em uma proposta", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return true;
     }

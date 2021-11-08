@@ -84,9 +84,8 @@ public class CriaNovaBiometriaControllerTest {
                         .status()
                         .isCreated())
                 .andExpect(MockMvcResultMatchers
-                        .redirectedUrlPattern("http://**/api/v1/biometrias/{spring:[0-9]+}"));
+                        .redirectedUrlPattern("http://**/api/v1/cartoes/{spring:[0-9]+}/biometrias"));
 
-        assertTrue(propostaRepository.findByDocument("99985090098").isPresent());
         assertTrue(cartaoRepository.findByNumero("5812-4804-7265-6806").isPresent());
         assertTrue(biometriaRepository.findById(1L).isPresent());
     }

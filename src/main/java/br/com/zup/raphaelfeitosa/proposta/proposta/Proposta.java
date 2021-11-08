@@ -4,6 +4,7 @@ import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartaoServicoAnaliseApi;
 import br.com.zup.raphaelfeitosa.proposta.cartao.SolicitaAnaliseCartaoServicoAnaliseApi;
 import br.com.zup.raphaelfeitosa.proposta.cartao.StatusAnaliseCartao;
+import br.com.zup.raphaelfeitosa.proposta.config.security.Encryptor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -17,19 +18,20 @@ public class Proposta {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String nome;
 
     @Column(nullable = false)
     private String email;
 
+    @Convert(converter = Encryptor.class)
     @Column(nullable = false)
-    private String document;
+    private String documento;
 
     @Column(nullable = false)
-    private BigDecimal salary;
+    private BigDecimal salario;
 
     @Column(nullable = false)
-    private String address;
+    private String endereco;
 
     @Enumerated(EnumType.STRING)
     private StatusProposta status;
@@ -42,12 +44,12 @@ public class Proposta {
     public Proposta() {
     }
 
-    public Proposta(String name, String email, String document, BigDecimal salary, String address) {
-        this.name = name;
+    public Proposta(String nome, String email, String documento, BigDecimal salario, String endereco) {
+        this.nome = nome;
         this.email = email;
-        this.document = document;
-        this.salary = salary;
-        this.address = address;
+        this.documento = documento;
+        this.salario = salario;
+        this.endereco = endereco;
     }
 
     public Long getId() {
@@ -55,7 +57,7 @@ public class Proposta {
     }
 
     public String getName() {
-        return name;
+        return nome;
     }
 
     public String getEmail() {
@@ -63,15 +65,15 @@ public class Proposta {
     }
 
     public String getDocument() {
-        return document;
+        return documento;
     }
 
     public BigDecimal getSalary() {
-        return salary;
+        return salario;
     }
 
     public String getAddress() {
-        return address;
+        return endereco;
     }
 
     public StatusProposta getStatus() {
@@ -83,7 +85,7 @@ public class Proposta {
     }
 
     public SolicitaAnaliseCartaoServicoAnaliseApi toSolicitaAnaliseCartao() {
-        return new SolicitaAnaliseCartaoServicoAnaliseApi(document, name, id.toString());
+        return new SolicitaAnaliseCartaoServicoAnaliseApi(documento, nome, id.toString());
     }
 
     public void adicionaRestricao(StatusProposta status) {

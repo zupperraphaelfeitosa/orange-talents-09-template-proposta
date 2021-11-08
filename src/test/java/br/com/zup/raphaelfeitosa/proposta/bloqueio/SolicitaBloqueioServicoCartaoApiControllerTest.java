@@ -89,10 +89,8 @@ public class SolicitaBloqueioServicoCartaoApiControllerTest {
                 .andExpect(MockMvcResultMatchers
                         .status()
                         .isOk());
-
-        assertTrue(propostaRepository.findByDocument("99985090098").isPresent());
         assertTrue(cartaoRepository.findByStatus(StatusCartao.BLOQUEADO).isPresent());
-        assertTrue(bloqueioRepository.findByNumero("5812-4804-7265-6806").isPresent());
+        assertTrue(bloqueioRepository.findByCartao_id(cartao.getId()).isPresent());
     }
 
     @Test
@@ -108,9 +106,8 @@ public class SolicitaBloqueioServicoCartaoApiControllerTest {
                 .andExpect(MockMvcResultMatchers
                         .status()
                         .isUnprocessableEntity());
-        assertTrue(propostaRepository.findByDocument("99985090098").isPresent());
         assertTrue(cartaoRepository.findByStatus(StatusCartao.DESBLOQUEADO).isPresent());
-        assertTrue(bloqueioRepository.findByNumero("5812-4804-7265-6806").isEmpty());
+        assertTrue(bloqueioRepository.findByCartao_id(cartao.getId()).isEmpty());
     }
 
     @Test

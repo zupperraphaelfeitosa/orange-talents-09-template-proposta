@@ -1,7 +1,7 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
 import br.com.zup.raphaelfeitosa.proposta.validations.anotations.CPForCNPJ;
-import br.com.zup.raphaelfeitosa.proposta.validations.anotations.ExistDocument;
+import br.com.zup.raphaelfeitosa.proposta.validations.anotations.ExistDocumento;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -20,25 +20,25 @@ public class PropostaRequest {
 
     @NotBlank
     @CPForCNPJ
-    @ExistDocument
-    private String document;
+    @ExistDocumento
+    private String documento;
 
     @NotNull
     @Positive
-    private BigDecimal salary;
+    private BigDecimal salario;
 
     @NotBlank
-    private String address;
+    private String endereco;
 
-    public PropostaRequest(String name, String email, String document, BigDecimal salary, String address) {
+    public PropostaRequest(String name, String email, String documento, BigDecimal salario, String endereco) {
         this.name = name;
         this.email = email;
-        this.document = document;
-        this.salary = salary;
-        this.address = address;
+        this.documento = documento;
+        this.salario = salario;
+        this.endereco = endereco;
     }
 
     public Proposta toProposta() {
-        return new Proposta(name, email, document, salary, address);
+        return new Proposta(name, email, documento, salario, endereco);
     }
 }

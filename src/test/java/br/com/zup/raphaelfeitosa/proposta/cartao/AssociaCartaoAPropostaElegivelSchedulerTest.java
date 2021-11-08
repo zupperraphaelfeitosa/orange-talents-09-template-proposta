@@ -67,6 +67,5 @@ public class AssociaCartaoAPropostaElegivelSchedulerTest {
 
         assertTrue(propostaRepository.findFirst10ByStatusAndCartao(StatusProposta.ELEGIVEL, null).isEmpty());
         assertTrue(cartaoRepository.findByNumero("5812-4804-7265-6806").isPresent());
-        assertTrue(propostaRepository.findByDocument("38783121056").isPresent());
     }
 }

@@ -46,7 +46,7 @@ public class CriaNovaBiometriaController implements OfuscaDadoSensivel {
         Biometria novaBiometria = request.toBiometria(cartao);
         biometriaRepository.save(novaBiometria);
 
-        URI uri = uriBuilder.path("/api/v1/biometrias/{id}").buildAndExpand(novaBiometria.getId()).toUri();
+        URI uri = uriBuilder.path("/api/v1/cartoes/{id}/biometrias").buildAndExpand(novaBiometria.getId()).toUri();
         logger.info("Foi registrado uma nova biometria com id={} para o cartão={}",
                 novaBiometria.getId(), ofuscaCartao(cartao.getNumero()));
         return ResponseEntity.created(uri).build();

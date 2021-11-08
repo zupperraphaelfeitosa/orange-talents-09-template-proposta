@@ -5,10 +5,10 @@ import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = {ExistsDocumentValidator.class})
+@Constraint(validatedBy = {ExistsDocumentoValidator.class})
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ExistDocument {
+public @interface ExistDocumento {
     String message() default "Documento já vinculado em uma proposta";
 
     Class<?>[] groups() default {};

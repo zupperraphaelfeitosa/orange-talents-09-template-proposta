@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface BloqueioRepository extends JpaRepository<Bloqueio, Long> {
 
-    Optional<Bloqueio> findByNumero(String numero);
+    Optional<Bloqueio> findByCartao_id(Long numero);
 }
