@@ -1,7 +1,6 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.RetornoAnaliseCartaoServicoAnaliseApi;
-import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 import br.com.zup.raphaelfeitosa.proposta.feign.ServicoAnaliseApi;
 import br.com.zup.raphaelfeitosa.proposta.validations.exceptions.ApiResponseException;
 import feign.FeignException;
@@ -18,8 +17,10 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 
+import static br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel.ofuscaDocumento;
+
 @RestController
-public class CriaNovaPropostaController implements OfuscaDadoSensivel {
+public class CriaNovaPropostaController {
 
     private final Logger logger = LoggerFactory.getLogger(CriaNovaPropostaController.class);
     private final PropostaRepository propostaRepository;
@@ -61,7 +62,7 @@ public class CriaNovaPropostaController implements OfuscaDadoSensivel {
         } catch (FeignException exception) {
             logger.error("não foi possível consultar o serviço de analise. Erro: {}",
                     exception.getLocalizedMessage());
-            throw new ApiResponseException("Serviço analise API", "não foi possível consultar o serviço de analise", HttpStatus.BAD_REQUEST);
+            throw new ApiResponseException("Serviço analise API", "não foi possível consultar o serviço de analise", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 

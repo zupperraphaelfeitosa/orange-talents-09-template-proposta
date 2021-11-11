@@ -3,7 +3,6 @@ package br.com.zup.raphaelfeitosa.proposta.biometria;
 
 import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.CartaoRepository;
-import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 import br.com.zup.raphaelfeitosa.proposta.validations.exceptions.ApiResponseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +16,11 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Base64;
 
+import static br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel.ofuscaCartao;
+
 @RestController
 @RequestMapping("/api/v1/cartoes")
-public class CriaNovaBiometriaController implements OfuscaDadoSensivel {
+public class CriaNovaBiometriaController {
 
     private final Logger logger = LoggerFactory.getLogger(CriaNovaBiometriaController.class);
     private final BiometriaRepository biometriaRepository;

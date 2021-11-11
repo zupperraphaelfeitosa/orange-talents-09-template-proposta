@@ -1,26 +1,26 @@
 package br.com.zup.raphaelfeitosa.proposta.config.util;
 
-public interface OfuscaDadoSensivel {
+public class OfuscaDadoSensivel {
 
-    default String ofuscaEmail(String email) {
+    public static String ofuscaEmail(String email) {
         String[] emailDividido = email.split("@");
         return emailDividido[0].substring(0, 3) + "***@" + emailDividido[1];
     }
 
-    default String ofuscaNome(String nome) {
+    public static String ofuscaNome(String nome) {
         String[] nomeDividido = nome.split(" ");
         StringBuilder nomeFinal = new StringBuilder();
-        for (int i = 0; i < nomeDividido.length; i++) {
-            nomeFinal.append(nomeDividido[i].substring(0, 1) + ". ");
+        for (String s : nomeDividido) {
+            nomeFinal.append(s.charAt(0)).append(". ");
         }
         return nomeFinal.toString();
     }
 
-    default String ofuscaDocumento(String documento) {
+    public static String ofuscaDocumento(String documento) {
         return documento.substring(0, 3) + "***" + documento.substring(documento.length() - 2);
     }
 
-    default String ofuscaCartao(String cartao) {
+    public static String ofuscaCartao(String cartao) {
         if (cartao == null) {
             return null;
         }

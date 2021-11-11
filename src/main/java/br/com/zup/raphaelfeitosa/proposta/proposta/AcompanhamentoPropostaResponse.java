@@ -1,10 +1,10 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
-import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
-
 import java.math.BigDecimal;
 
-public class AcompanhamentoPropostaResponse implements OfuscaDadoSensivel {
+import static br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel.*;
+
+public class AcompanhamentoPropostaResponse {
 
     private String nome;
     private String email;

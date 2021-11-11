@@ -4,7 +4,6 @@ import br.com.zup.raphaelfeitosa.proposta.feign.ServicoCartaoApi;
 import br.com.zup.raphaelfeitosa.proposta.proposta.Proposta;
 import br.com.zup.raphaelfeitosa.proposta.proposta.PropostaRepository;
 import br.com.zup.raphaelfeitosa.proposta.proposta.StatusProposta;
-import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +13,10 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.util.Collection;
 
+import static br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel.*;
+
 @Component
-public class AssociaCartaoAPropostaElegivelScheduler implements OfuscaDadoSensivel {
+public class AssociaCartaoAPropostaElegivelScheduler {
 
     private final Logger logger = LoggerFactory.getLogger(AssociaCartaoAPropostaElegivelScheduler.class);
     private final PropostaRepository propostaRepository;

@@ -1,6 +1,5 @@
 package br.com.zup.raphaelfeitosa.proposta.proposta;
 
-import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 import br.com.zup.raphaelfeitosa.proposta.validations.exceptions.ApiResponseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AcompanhamentoPropostaController implements OfuscaDadoSensivel {
+public class AcompanhamentoPropostaController {
 
     private final Logger logger = LoggerFactory.getLogger(AcompanhamentoPropostaController.class);
     private final PropostaRepository propostaRepository;

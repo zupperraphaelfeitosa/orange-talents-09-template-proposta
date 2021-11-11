@@ -3,7 +3,6 @@ package br.com.zup.raphaelfeitosa.proposta.carteira;
 import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.CartaoRepository;
 import br.com.zup.raphaelfeitosa.proposta.feign.ServicoCartaoApi;
-import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 import br.com.zup.raphaelfeitosa.proposta.validations.exceptions.ApiResponseException;
 import feign.FeignException;
 import org.slf4j.Logger;
@@ -18,9 +17,11 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
 
+import static br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel.ofuscaCartao;
+
 @RestController
 @RequestMapping("/api/v1/cartoes")
-public class CriaNovaCarteiraController implements OfuscaDadoSensivel {
+public class CriaNovaCarteiraController {
 
     private final Logger logger = LoggerFactory.getLogger(CriaNovaCarteiraController.class);
     private final CartaoRepository cartaoRepository;

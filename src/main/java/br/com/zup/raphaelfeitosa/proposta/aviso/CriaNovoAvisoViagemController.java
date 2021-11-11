@@ -3,7 +3,6 @@ package br.com.zup.raphaelfeitosa.proposta.aviso;
 import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.CartaoRepository;
 import br.com.zup.raphaelfeitosa.proposta.feign.ServicoCartaoApi;
-import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 import br.com.zup.raphaelfeitosa.proposta.validations.exceptions.ApiResponseException;
 import feign.FeignException;
 import org.slf4j.Logger;
@@ -16,9 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import static br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel.ofuscaCartao;
+
 @RestController
 @RequestMapping("/api/v1/cartoes")
-public class CriaNovoAvisoViagemController implements OfuscaDadoSensivel {
+public class CriaNovoAvisoViagemController {
 
     private final Logger logger = LoggerFactory.getLogger(CriaNovoAvisoViagemController.class);
     private final CartaoRepository cartaoRepository;
@@ -36,9 +37,9 @@ public class CriaNovoAvisoViagemController implements OfuscaDadoSensivel {
     @PostMapping("/{id}/aviso-viagem")
     @Transactional
     public ResponseEntity<?> criarNovoAvisoViagem(@PathVariable(name = "id") Long id,
-                                                     @RequestHeader(value = "User-Agent") String userAgent,
-                                                     HttpServletRequest request,
-                                                     @RequestBody @Valid AvisoViagemRequest avisoViagemRequest) {
+                                                  @RequestHeader(value = "User-Agent") String userAgent,
+                                                  HttpServletRequest request,
+                                                  @RequestBody @Valid AvisoViagemRequest avisoViagemRequest) {
         Cartao cartao = cartaoRepository.findById(id)
                 .orElseThrow(() -> new ApiResponseException(
                         "idCartao", "Id do cartão é inválido", HttpStatus.NOT_FOUND));

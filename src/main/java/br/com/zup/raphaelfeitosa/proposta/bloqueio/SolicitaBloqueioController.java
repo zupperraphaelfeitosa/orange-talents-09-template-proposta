@@ -3,7 +3,6 @@ package br.com.zup.raphaelfeitosa.proposta.bloqueio;
 import br.com.zup.raphaelfeitosa.proposta.cartao.Cartao;
 import br.com.zup.raphaelfeitosa.proposta.cartao.CartaoRepository;
 import br.com.zup.raphaelfeitosa.proposta.feign.ServicoCartaoApi;
-import br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel;
 import br.com.zup.raphaelfeitosa.proposta.validations.exceptions.ApiResponseException;
 import feign.FeignException;
 import org.slf4j.Logger;
@@ -16,9 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+import static br.com.zup.raphaelfeitosa.proposta.config.util.OfuscaDadoSensivel.ofuscaCartao;
+
 @RestController
 @RequestMapping("/api/v1/cartoes")
-public class SolicitaBloqueioController implements OfuscaDadoSensivel {
+public class SolicitaBloqueioController {
 
     private final Logger logger = LoggerFactory.getLogger(SolicitaBloqueioController.class);
     private final CartaoRepository cartaoRepository;
@@ -34,8 +35,8 @@ public class SolicitaBloqueioController implements OfuscaDadoSensivel {
     @PostMapping("/{id}/bloqueios")
     @Transactional
     public ResponseEntity<?> solicitaBloqueio(@PathVariable(name = "id") Long id,
-                                                 @RequestHeader(value = "User-Agent") String userAgent,
-                                                 HttpServletRequest request) {
+                                              @RequestHeader(value = "User-Agent") String userAgent,
+                                              HttpServletRequest request) {
         Cartao cartao = cartaoRepository.findById(id)
                 .orElseThrow(() -> new ApiResponseException(
                         "idCartao", "Id do cartão é inválido", HttpStatus.NOT_FOUND));
@@ -46,7 +47,8 @@ public class SolicitaBloqueioController implements OfuscaDadoSensivel {
             throw new ApiResponseException("bloqueio", "Esse cartão já está bloqueado", HttpStatus.UNPROCESSABLE_ENTITY);
 
         notificacaoBloqueioCartao(cartao, userAgent, request.getRemoteAddr());
-        logger.info("Bloqueio do cartão: {} realizado com sucesso!", ofuscaCartao(cartao.getNumero()));
+        logger.info("Bloqueio do cartão: {} realizado com sucesso!",
+                ofuscaCartao(cartao.getNumero()));
         return ResponseEntity.ok().build();
     }
 
